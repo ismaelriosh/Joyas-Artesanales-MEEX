@@ -212,16 +212,23 @@
     .product-item:hover .img-wrapper img.model-shot-2 { 
       opacity: 1; transform: scale(1);
       transition: opacity 0.8s var(--ease-luxe), transform 0.8s var(--ease-luxe);
-      transition-delay: 1.5s; /* El secreto del "upselling natural" */
+      transition-delay: 1.5s; 
     }
 
-    /* INFO PRODUCTO */
+    /* INFO PRODUCTO & COPYWRITING LUXURY */
     .p-info { 
       margin-top: 20px; display: flex; justify-content: space-between; align-items: baseline; 
       font-family: var(--font-sans);
     }
+    
+    .p-text-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
     .p-name { 
-      font-size: 0.85rem; font-weight: 400; letter-spacing: 0.02em; color: #000; 
+      font-size: 0.85rem; font-weight: 500; letter-spacing: 0.02em; color: #000; 
       position: relative; display: inline-block;
     }
     .p-name::after {
@@ -230,7 +237,16 @@
     }
     .product-item:hover .p-name::after { width: 100%; }
     
-    .p-price { font-size: 0.8rem; color: var(--gray); font-weight: 300; }
+    .p-desc {
+      font-size: 0.6rem;
+      color: var(--gray);
+      margin-top: 6px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 300;
+    }
+
+    .p-price { font-size: 0.8rem; color: #000; font-weight: 400; }
 
     /* ZARA LAYOUT LOGIC */
     .product-item:nth-child(7n) { grid-column: span 2; grid-row: span 2; }
@@ -238,7 +254,7 @@
     .product-item:nth-child(11n) .img-wrapper { aspect-ratio: 21/9; }
     .product-item:nth-child(3n) { margin-top: 80px; } 
 
-    /* CART UI & MODALS (Ocultados para economizar espacio visual, todo igual de fino) */
+    /* CART UI & MODALS */
     .cart-header { display: flex; justify-content: space-between; border-bottom: 1px solid #000; padding-bottom: 20px; margin-bottom: 40px;}
     .cart-items { flex: 1; overflow-y: auto; padding-right: 10px; }
     .cart-item-row { display: flex; gap: 20px; margin-bottom: 30px; animation: fadeIn 0.5s; }
@@ -276,8 +292,10 @@
 </head>
 <body>
 
+  <!-- Overlay de desenfoque -->
   <div id="overlay" class="overlay" onclick="closeAllDrawers()"></div>
 
+  <!-- Header Flotante -->
   <header>
     <div class="nav-left">
       <button class="burger-btn" onclick="toggleMenu()">
@@ -293,6 +311,7 @@
     </div>
   </header>
 
+  <!-- Menú Lateral -->
   <div id="side-menu" class="drawer side-menu">
     <div style="display:flex; justify-content:space-between; margin-bottom:60px;">
       <span class="uppercase" style="color:var(--gray)">Index</span>
@@ -313,6 +332,7 @@
     </div>
   </div>
 
+  <!-- Carrito -->
   <div id="cart-drawer" class="drawer cart-drawer">
     <div class="cart-header">
       <h3 class="serif" style="font-size: 1.5rem;">Shopping Bag</h3>
@@ -375,6 +395,7 @@
     </footer>
   </main>
 
+  <!-- Modal Checkout -->
   <div id="checkoutModal" class="modal">
     <div class="modal-content">
       <div style="text-align:right;"><button onclick="closeCheckout()" style="font-size:1.5rem; padding:10px;">&times;</button></div>
@@ -392,47 +413,47 @@
   <script>
     const WA_NUMBER = "17143929868";
     
-    /* --- BASE DE DATOS DE PRODUCTOS ---
-      Aquí configuramos el Arreglo de Modelos.
-      El índice [0] es el arete. El índice [1] es el collar.
+    /* --- BASE DE DATOS DE PRODUCTOS (PRECIOS & DESCRIPCIONES ACTUALIZADOS) ---
+      Todo lo de Geometría de Fuego y Azul Profundo escalado a $580.
+      Agregado el campo 'desc' para justificar el lujo (Plata Ley .925 y Gema Refinada).
     */
     const inventory = [
       { cat: "Naturaleza Viva", items: [
-        { id: 1,  name: "Set Mariposa Turquesa", exhibit: "4.png",  model: ["Set Mariposa Turquesa.png", "Set Mariposa Turquesa collar.png"],  price: 125 },
-        { id: 2,  name: "Set Mariposa Ojo de Tigre", exhibit: "34.png", model: ["Set Mariposa Ojo de Tigre.png", "Set Mariposa Ojo de Tigre collar.png"], price: 115 },
-        { id: 3,  name: "Colibrí Black Diamond", exhibit: "48.png", model: ["Colibrí Black Diamond.png", "Colibrí Black Diamond collar.png"], price: 155 },
-        { id: 4,  name: "Colibrí Ámbar", exhibit: "49.png", model: ["Colibrí Ámbar.png", "Colibrí Ámbar collar.png"], price: 145 },
-        { id: 5,  name: "Colibrí Turquesa", exhibit: "51.png", model: ["Colibrí Turquesa.png", "Colibrí Turquesa collar.png"], price: 145 },
-        { id: 6,  name: "Colibrí Esmeralda", exhibit: "53.png", model: ["Colibrí Esmeralda.png", "Colibrí Esmeralda collar.png"], price: 145 },
-        { id: 7,  name: "Colibrí Rubí", exhibit: "55.png", model: ["Colibrí Rubí.png", "Colibrí Rubí collar.png"], price: 145 },
-        { id: 8,  name: "Colibrí Zafiro", exhibit: "57.png", model: ["Colibrí Zafiro.png", "Colibrí Zafiro collar.png"], price: 145 },
-        { id: 9,  name: "Colibrí Amatista", exhibit: "59.png", model: ["Colibrí Amatista.png", "Colibrí Amatista collar.png"], price: 145 },
+        { id: 1,  name: "Set Mariposa Turquesa", exhibit: "4.png",  model: ["Set Mariposa Turquesa.png", "Set Mariposa Turquesa collar.png"],  price: 155, desc: "Plata Ley .925 · Turquesa Natural" },
+        { id: 2,  name: "Set Mariposa Ojo de Tigre", exhibit: "34.png", model: ["Set Mariposa Ojo de Tigre.png", "Set Mariposa Ojo de Tigre collar.png"], price: 155, desc: "Plata Ley .925 · Ojo de Tigre" },
+        { id: 3,  name: "Colibrí Black Diamond", exhibit: "48.png", model: ["Colibrí Black Diamond.png", "Colibrí Black Diamond collar.png"], price: 155, desc: "Pieza Artesanal · Gema Refinada" },
+        { id: 4,  name: "Colibrí Ámbar", exhibit: "49.png", model: ["Colibrí Ámbar.png", "Colibrí Ámbar collar.png"], price: 155, desc: "Pieza Artesanal · Ámbar Natural" },
+        { id: 5,  name: "Colibrí Turquesa", exhibit: "51.png", model: ["Colibrí Turquesa.png", "Colibrí Turquesa collar.png"], price: 155, desc: "Pieza Artesanal · Turquesa Natural" },
+        { id: 6,  name: "Colibrí Esmeralda", exhibit: "53.png", model: ["Colibrí Esmeralda.png", "Colibrí Esmeralda collar.png"], price: 155, desc: "Pieza Artesanal · Gema Refinada" },
+        { id: 7,  name: "Colibrí Rubí", exhibit: "55.png", model: ["Colibrí Rubí.png", "Colibrí Rubí collar.png"], price: 155, desc: "Pieza Artesanal · Gema Refinada" },
+        { id: 8,  name: "Colibrí Zafiro", exhibit: "57.png", model: ["Colibrí Zafiro.png", "Colibrí Zafiro collar.png"], price: 155, desc: "Pieza Artesanal · Gema Refinada" },
+        { id: 9,  name: "Colibrí Amatista", exhibit: "59.png", model: ["Colibrí Amatista.png", "Colibrí Amatista collar.png"], price: 155, desc: "Pieza Artesanal · Amatista Natural" },
       ]},
       { cat: "Geometría de Fuego", items: [
-        { id: 10, name: "Set Rectangular Rubí", exhibit: "28.png", model: ["Set Rectangular Rubí.png", "Set Rectangular Rubí collar.png"], price: 160 },
-        { id: 11, name: "Set Abanico Granate", exhibit: "26.png", model: ["Set Abanico Granate.png", "Set Abanico Granate collar.png"], price: 130 },
-        { id: 12, name: "Mosaico Rojo Noche", exhibit: "17.png", model: ["Mosaico Rojo Edición Noche.png", "Mosaico Rojo Noche collar.png"], price: 155 },
-        { id: 13, name: "Mosaico Rojo Clásico", exhibit: "11.png", model: ["10.png", "Mosaico Rojo Clásico collar.png"], price: 115 },
-        { id: 14, name: "Brazalete Rubí", exhibit: "13.png", model: ["12.png", "Brazalete Rubí collar.png"], price: 95 },
+        { id: 10, name: "Set Rectangular Rubí", exhibit: "28.png", model: ["Set Rectangular Rubí.png", "Set Rectangular Rubí collar.png"], price: 580, desc: "Plata Ley .925 · Gema Preciosa Refinada" },
+        { id: 11, name: "Set Abanico Granate", exhibit: "26.png", model: ["Set Abanico Granate.png", "Set Abanico Granate collar.png"], price: 580, desc: "Plata Ley .925 · Gema Preciosa Refinada" },
+        { id: 12, name: "Mosaico Rojo Noche", exhibit: "17.png", model: ["Mosaico Rojo Edición Noche.png", "Mosaico Rojo Noche collar.png"], price: 580, desc: "Plata Ley .925 · Gema Preciosa Refinada" },
+        { id: 13, name: "Mosaico Rojo Clásico", exhibit: "11.png", model: ["10.png", "Mosaico Rojo Clásico collar.png"], price: 580, desc: "Plata Ley .925 · Gema Preciosa Refinada" },
+        { id: 14, name: "Brazalete Rubí", exhibit: "13.png", model: ["12.png", "Brazalete Rubí collar.png"], price: 580, desc: "Plata Ley .925 · Gema Preciosa Refinada" },
       ]},
       { cat: "Azul Profundo", items: [
-        { id: 15, name: "Lapislázuli Royal", exhibit: "14.png", model: ["15.png", "Lapislázuli Royal collar.png"], price: 145 },
-        { id: 16, name: "Lapislázuli Detail", exhibit: "32.png", model: ["Lapislázuli Detail.png", "Lapislázuli Detail collar.png"], price: 145 },
-        { id: 17, name: "Turquesa Geométrica", exhibit: "23.png", model: ["Turquesa Geométrica.png", "Turquesa Geométrica collar.png"], price: 120 },
-        { id: 18, name: "Turquesa Studio", exhibit: "31.png", model: ["Turquesa Geométrica.png", "Turquesa Studio collar.png"], price: 120 },
-        { id: 19, name: "Turquesa Edición Azul", exhibit: "24.png", model: ["Turquesa Edición Azul.png", "25.png"], price: 120 },
-        { id: 20, name: "Ópalo Blanco", exhibit: "18.png", model: ["Ópalo Blanco Geométrico.png", "Ópalo Blanco collar.png"], price: 135 },
-        { id: 21, name: "Ámbar Geométrico", exhibit: "20.png", model: ["Ámbar Geométrico.png", "Ámbar Geométrico collar.png"], price: 125 },
-        { id: 22, name: "Colección Flores", exhibit: "2.png", model: ["Colección Flores Turquesa.png", "Colección Flores collar.png"], price: 135 },
-        { id: 23, name: "Ópalo Floral Premium", exhibit: "8.png", model: ["9.png", "Ópalo Floral Premium collar.png"], price: 155 },
+        { id: 15, name: "Lapislázuli Royal", exhibit: "14.png", model: ["15.png", "Lapislázuli Royal collar.png"], price: 580, desc: "Plata Ley .925 · Gema Preciosa Refinada" },
+        { id: 16, name: "Lapislázuli Detail", exhibit: "32.png", model: ["Lapislázuli Detail.png", "Lapislázuli Detail collar.png"], price: 580, desc: "Plata Ley .925 · Gema Preciosa Refinada" },
+        { id: 17, name: "Turquesa Geométrica", exhibit: "23.png", model: ["Turquesa Geométrica.png", "Turquesa Geométrica collar.png"], price: 580, desc: "Plata Ley .925 · Gema Preciosa Refinada" },
+        { id: 18, name: "Turquesa Studio", exhibit: "31.png", model: ["Turquesa Geométrica.png", "Turquesa Studio collar.png"], price: 580, desc: "Plata Ley .925 · Gema Preciosa Refinada" },
+        { id: 19, name: "Turquesa Edición Azul", exhibit: "24.png", model: ["Turquesa Edición Azul.png", "25.png"], price: 580, desc: "Plata Ley .925 · Gema Preciosa Refinada" },
+        { id: 20, name: "Ópalo Blanco", exhibit: "18.png", model: ["Ópalo Blanco Geométrico.png", "Ópalo Blanco collar.png"], price: 580, desc: "Plata Ley .925 · Gema Preciosa Refinada" },
+        { id: 21, name: "Ámbar Geométrico", exhibit: "20.png", model: ["Ámbar Geométrico.png", "Ámbar Geométrico collar.png"], price: 580, desc: "Plata Ley .925 · Gema Preciosa Refinada" },
+        { id: 22, name: "Colección Flores", exhibit: "2.png", model: ["Colección Flores Turquesa.png", "Colección Flores collar.png"], price: 580, desc: "Plata Ley .925 · Gema Preciosa Refinada" },
+        { id: 23, name: "Ópalo Floral Premium", exhibit: "8.png", model: ["9.png", "Ópalo Floral Premium collar.png"], price: 580, desc: "Plata Ley .925 · Gema Preciosa Refinada" },
       ]},
       { cat: "Heritage", items: [
-        { id: 25, name: "Gargantilla Oro", exhibit: "6.png", model: ["7.png", "Gargantilla Oro collar.png"], price: 110 },
-        { id: 26, name: "Aretes Calendario", exhibit: "37.png", model: ["38.png", "Aretes Calendario collar.png"], price: 95 },
-        { id: 27, name: "Corazón Filigrana", exhibit: "40.png", model: ["39.png", "Corazón Filigrana collar.png"], price: 85 },
-        { id: 28, name: "Abanico Filigrana", exhibit: "41.png", model: ["42.png", "Abanico Filigrana collar.png"], price: 85 },
-        { id: 29, name: "Triangular Filigrana", exhibit: "44.png", model: ["43.png", "Triangular Filigrana collar.png"], price: 85 },
-        { id: 30, name: "Aretes Lazo de Oro", exhibit: "46.png", model: ["45.png", "Aretes Lazo de Oro collar.png"], price: 75 },
+        { id: 25, name: "Gargantilla Cobre", exhibit: "6.png", model: ["7.png", "Gargantilla Oro collar.png"], price: 45, desc: "Aleación Artesanal" },
+        { id: 26, name: "Aretes Calendario", exhibit: "37.png", model: ["38.png", "Aretes Calendario collar.png"], price: 38, desc: "Filigrana Artesanal · Chapa de Oro" },
+        { id: 27, name: "Corazón Filigrana", exhibit: "40.png", model: ["39.png", "Corazón Filigrana collar.png"], price: 28, desc: "Filigrana Artesanal · Chapa de Oro" },
+        { id: 28, name: "Abanico Filigrana", exhibit: "41.png", model: ["42.png", "Abanico Filigrana collar.png"], price: 38, desc: "Filigrana Artesanal · Chapa de Oro" },
+        { id: 29, name: "Triangular Filigrana", exhibit: "44.png", model: ["43.png", "Triangular Filigrana collar.png"], price: 35, desc: "Filigrana Artesanal · Chapa de Oro" },
+        { id: 30, name: "Aretes Lazo de Oro", exhibit: "46.png", model: ["45.png", "Aretes Lazo de Oro collar.png"], price: 28, desc: "Filigrana Artesanal · Chapa de Oro" },
       ]}
     ];
 
@@ -457,7 +478,6 @@
                 let imgBack1 = null;
                 let imgBack2 = null;
                 
-                // Procesar la lista de modelos para extraer ambas imágenes
                 if (Array.isArray(p.model)) {
                   imgBack1 = p.model[0] || null;
                   imgBack2 = p.model[1] || null;
@@ -465,7 +485,6 @@
                   imgBack1 = p.model;
                 }
 
-                // Generar etiquetas solo si las fotos existen
                 const htmlModel1 = imgBack1 ? `<img src="${imgBack1}" class="model-shot-1" loading="lazy" alt="${p.name} Arete">` : '';
                 const htmlModel2 = imgBack2 ? `<img src="${imgBack2}" class="model-shot-2" loading="lazy" alt="${p.name} Collar">` : '';
                 
@@ -477,7 +496,10 @@
                       ${htmlModel2}
                     </div>
                     <div class="p-info">
-                      <div class="p-name">${p.name}</div>
+                      <div class="p-text-container">
+                        <div class="p-name">${p.name}</div>
+                        ${p.desc ? `<div class="p-desc">${p.desc}</div>` : ''}
+                      </div>
                       <div class="p-price">$${p.price}</div>
                     </div>
                   </div>
